@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>开源许可与源码获取 — DZ Video Upscale</title>
+<meta name="description" content="DZ Video Upscale 随包分发的第三方开源组件清单、许可证与源码获取方式。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191C'/%3E%3Cpath d='M9 23V9h10l4 4v10H9z' fill='none' stroke='%2338BFA4' stroke-width='2'/%3E%3Cpath d='M12 16h8M12 19h5' stroke='%23F6F7F8' stroke-width='1.6'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#F6F7F8; --ink:#17191C; --ink-2:#53585F; --line:#DFE3E7; --accent:#1F6F5C;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    font-size:16px; line-height:1.72; letter-spacing:.01em;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px}
+  header{border-bottom:1px solid var(--line); padding:22px 0}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; letter-spacing:.02em}
+  .dot{width:22px;height:22px;border-radius:5px;background:var(--ink);position:relative;flex:none}
+  .dot::after{content:"";position:absolute;inset:5px;border:1.6px solid #38BFA4;border-radius:2px}
+  main{padding:44px 0 60px}
+  h1{font-size:28px; line-height:1.25; margin:0 0 8px; font-weight:700; letter-spacing:-.02em}
+  .date{color:var(--ink-2); font-size:14px; margin:0 0 34px}
+  h2{font-size:17px; margin:34px 0 8px; font-weight:650}
+  p{margin:0 0 12px; font-size:15.5px}
+  ul{margin:0 0 12px; padding-left:20px}
+  li{font-size:15.5px; margin-bottom:6px}
+  table{width:100%; border-collapse:collapse; margin:14px 0 18px; font-size:14.5px}
+  th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{font-weight:650; color:var(--ink)}
+  td code{font-size:13.5px; background:#EDEFF2; padding:1px 5px; border-radius:3px}
+  .note{border-left:2px solid var(--accent); padding:12px 0 12px 16px; color:var(--ink-2); font-size:14.5px}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(31,111,92,.35)}
+  footer{border-top:1px solid var(--line); padding:24px 0 44px; font-size:13px; color:var(--ink-2)}
+  footer a{color:var(--ink-2); border-bottom:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand"><span class="dot"></span> DZ Video Upscale</div>
+</header>
+
+<main class="wrap">
+  <h1>开源许可与源码获取</h1>
+  <p class="date">更新日期：2026 年 11 月 18 日</p>
+
+  <p class="note">一句话总结：DZ Video Upscale 随包分发了若干开源组件。这里列出它们的作者、许可证，以及按许可证要求应提供的源码获取方式。我们自己的 App 代码不开源。</p>
+
+  <h2>1. 随包分发的组件</h2>
+  <table>
+    <thead><tr><th>组件</th><th>版本</th><th>许可证</th><th>版权</th></tr></thead>
+    <tbody>
+      <tr><td>FFmpeg（ffmpeg / ffprobe / libav*）</td><td>9.0.2</td><td>LGPL-2.1</td><td>the FFmpeg developers</td></tr>
+      <tr><td>libvpx</td><td>1.17.x</td><td>BSD-3-Clause</td><td>The WebM Project authors</td></tr>
+      <tr><td>dav1d</td><td>1.5.x</td><td>BSD-2-Clause</td><td>VideoLAN and dav1d authors</td></tr>
+      <tr><td>libwebp / libsharpyuv</td><td>1.x</td><td>BSD-3-Clause</td><td>Google Inc.</td></tr>
+      <tr><td>ncnn</td><td>1.0.26</td><td>BSD-3-Clause</td><td>THL A29 Limited, a Tencent company</td></tr>
+      <tr><td>realesrgan-ncnn-vulkan</td><td>20220424</td><td>MIT</td><td>Xintao Wang / nihui</td></tr>
+      <tr><td>rife-ncnn-vulkan（本项目自建流式版）</td><td>自建</td><td>MIT</td><td>nihui</td></tr>
+      <tr><td>MoltenVK</td><td>随 Vulkan SDK</td><td>Apache-2.0</td><td>The Brenwill Workshop Ltd.</td></tr>
+      <tr><td>Vulkan Loader</td><td>随 Vulkan SDK</td><td>Apache-2.0</td><td>The Khronos Group Inc.</td></tr>
+      <tr><td>glslang / SPIRV-Tools / SPIRV-Cross</td><td>随 Vulkan SDK</td><td>Apache-2.0</td><td>The Khronos Group Inc.</td></tr>
+      <tr><td>libomp</td><td>随 LLVM</td><td>Apache-2.0 + LLVM exception</td><td>The LLVM Project</td></tr>
+      <tr><td>Real-ESRGAN 模型权重</td><td>—</td><td>BSD-3-Clause</td><td>Xintao Wang</td></tr>
+      <tr><td>RIFE 模型权重（rife-v4.6）</td><td>4.6</td><td>MIT</td><td>nihui</td></tr>
+    </tbody>
+  </table>
+
+  <p>完整的版权行、许可证全文与修改说明随 App 一起分发：<br>
+  App 内菜单 <code>Help → 开源许可…</code>，或包内 <code>Contents/Resources/THIRD-PARTY-NOTICES.txt</code> 与 <code>Contents/Resources/licenses/</code>。</p>
+
+  <h2>2. FFmpeg 源码（LGPL-2.1 义务）</h2>
+  <p>我们的 App 与 FFmpeg 是<strong>独立可执行体 + 动态库</strong>的关系（通过进程调用，不静态链接）。按 LGPL-2.1 的要求，我们提供：</p>
+  <ul>
+    <li>FFmpeg 9.0.2 的<strong>对应源码</strong>（上游版本，未修改源码）；</li>
+    <li>我们使用的<strong>构建脚本与配置项</strong>，可复现同一个二进制；</li>
+    <li>把库替换为自编译版本的<strong>可行性</strong>（动态链接，替换 <code>Contents/Frameworks/libav*.dylib</code> 后重签即可）。</li>
+  </ul>
+  <p>获取方式二选一：</p>
+  <ul>
+    <li><a href="https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz">下载上游源码包 ffmpeg-9.0.2.tar.xz</a>（我们的构建脚本见下方说明）；</li>
+    <li>书面向要约：发邮件到 <a href="mailto:china.jsy@qq.com">china.jsy@qq.com</a>，主题写「FFmpeg source request」，我们会提供源码包与构建脚本。该要约自本页发布之日起<strong>三年内</strong>有效。</li>
+  </ul>
+  <p>我们的构建配置（与 <code>ffmpeg -version</code> 输出一致）：</p>
+  <p><code>--disable-gpl --disable-nonfree --disable-x86asm --disable-vulkan --disable-doc --disable-debug --disable-ffplay --enable-ffprobe --enable-videotoolbox --enable-audiotoolbox --enable-libvpx --enable-libdav1d --enable-shared --enable-pic</code></p>
+  <p class="note">注意：这里<strong>没有</strong> <code>--enable-version3</code>，因此是 LGPL-2.1 而不是 LGPLv3。</p>
+
+  <h2>3. 我们自己的代码</h2>
+  <p>DZ Video Upscale 的 Swift 代码是闭源的商业软件。由于它与上述库是独立进程 + 动态库的关系，LGPL 不要求公开我们的代码；只有被 LGPL 覆盖的那部分库本身需要满足源码可获取。</p>
+
+  <h2>4. 联系</h2>
+  <p>发现署名遗漏或许可证错误，请写信到 <a href="mailto:china.jsy@qq.com">china.jsy@qq.com</a>，我们会在下一个版本修正。</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">返回首页</a> · <a href="privacy.html">隐私政策</a>
+  </div>
+</footer>
+
+</body>
+</html>
