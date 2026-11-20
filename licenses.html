@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>开源许可与源码获取 — DZ Video Upscale</title>
 <meta name="description" content="DZ Video Upscale 随包分发的第三方开源组件清单、许可证与源码获取方式。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317191C'/%3E%3Cpath d='M9 23V9h10l4 4v10H9z' fill='none' stroke='%2338BFA4' stroke-width='2'/%3E%3Cpath d='M12 16h8M12 19h5' stroke='%23F6F7F8' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/appicon.png">
 <style>
   :root{
     --bg:#F6F7F8; --ink:#17191C; --ink-2:#53585F; --line:#DFE3E7; --accent:#1F6F5C;
@@ -20,8 +20,7 @@
   .wrap{max-width:760px; margin:0 auto; padding:0 20px}
   header{border-bottom:1px solid var(--line); padding:22px 0}
   .brand{display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; letter-spacing:.02em}
-  .dot{width:22px;height:22px;border-radius:5px;background:var(--ink);position:relative;flex:none}
-  .dot::after{content:"";position:absolute;inset:5px;border:1.6px solid #38BFA4;border-radius:2px}
+  .dot{width:22px;height:22px;border-radius:5px;object-fit:cover;flex:none;background:var(--ink)}
   main{padding:44px 0 60px}
   h1{font-size:28px; line-height:1.25; margin:0 0 8px; font-weight:700; letter-spacing:-.02em}
   .date{color:var(--ink-2); font-size:14px; margin:0 0 34px}
@@ -42,7 +41,7 @@
 <body>
 
 <header>
-  <div class="wrap brand"><span class="dot"></span> DZ Video Upscale</div>
+  <div class="wrap brand"><img class="dot" src="assets/appicon.png" alt="DZ Video Upscale 图标"> DZ Video Upscale</div>
 </header>
 
 <main class="wrap">

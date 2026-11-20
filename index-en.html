@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DZ Video Upscale — On-device AI video upscaling for Mac</title>
+<meta name="description" content="DZ Video Upscale is an on-device video upscaler for Mac, accelerated by Apple silicon. Your footage stays on disk — no uploads, no queues, clean high-resolution output.">
+<link rel="icon" type="image/png" href="assets/appicon.png">
+<style>
+  :root{
+    --bg:#F6F7F8; --ink:#17191C; --ink-2:#53585F; --line:#DFE3E7;
+    --accent:#1F6F5C; --card:#FFFFFF;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    font-size:16px; line-height:1.65; letter-spacing:.01em;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px}
+  header{border-bottom:1px solid var(--line); padding:22px 0}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:600; font-size:15px; letter-spacing:.02em}
+  .dot{width:22px;height:22px;border-radius:5px;object-fit:cover;flex:none;background:var(--ink)}
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  h1{font-size:34px; line-height:1.2; margin:0 0 14px; font-weight:700; letter-spacing:-.02em}
+  .lede{color:var(--ink-2); font-size:17px; max-width:34em; margin:0}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px}
+  .chip{
+    font-size:13px; color:var(--ink-2); border:1px solid var(--line);
+    background:var(--card); padding:5px 11px; border-radius:100px; white-space:nowrap;
+  }
+  h2{font-size:20px; margin:0 0 8px; font-weight:650; letter-spacing:-.01em}
+  .grid{display:grid; grid-template-columns:1fr; gap:26px; margin-top:26px}
+  @media (min-width:700px){ .grid{grid-template-columns:repeat(2,1fr); gap:32px} }
+  .item{border-top:2px solid var(--ink); padding-top:14px; min-width:0}
+  .item h3{font-size:15px; margin:0 0 6px; font-weight:650}
+  .item p{font-size:14.5px; color:var(--ink-2); margin:0}
+  details{border-bottom:1px solid var(--line); padding:16px 0}
+  details:first-of-type{border-top:1px solid var(--line); margin-top:22px}
+  summary{cursor:pointer; font-weight:600; font-size:15px; list-style:none; display:flex; justify-content:space-between; gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; color:var(--ink-2); font-weight:400; flex:none}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--ink-2); font-size:14.5px; margin:10px 0 0}
+  .contact{margin-top:22px; font-size:15px}
+  .contact a{color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(31,111,92,.35)}
+  footer{padding:30px 0 44px; font-size:13px; color:var(--ink-2)}
+  footer a{color:var(--ink-2); text-decoration:none; border-bottom:1px solid var(--line); margin-right:18px}
+  @media (max-width:420px){ h1{font-size:27px} section{padding:40px 0} }
+  .brand-bar{display:flex; align-items:center; gap:10px}
+  .lang{display:inline-flex; align-items:center; gap:2px; border:1px solid var(--line); border-radius:100px; padding:2px; margin-left:auto; flex:none}
+  .lang a{font-size:12px; line-height:1; padding:5px 10px; border-radius:100px; color:var(--ink-2); text-decoration:none; border:0; margin:0; white-space:nowrap}
+  .lang a.on{background:var(--ink); color:#fff}
+</style>
+<body>
+<header>
+  <div class="wrap brand-bar">
+    <div class="brand"><img class="dot" src="assets/appicon.png" alt="DZ Video Upscale app icon"> DZ Video Upscale</div>
+    <nav class="lang" aria-label="Language">
+      <a href="index-zh.html">中文</a>
+      <a class="on" href="index-en.html" aria-current="page">English</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h1>Upscale your footage to 4K, right on your Mac</h1>
+    <p class="lede">DZ Video Upscale is an on-device video upscaler. Inference runs locally on Apple silicon and your files never leave the disk — no uploads, no queues, no waiting on someone else's server.</p>
+    <div class="meta">
+      <span class="chip">Apple silicon (M1 and later)</span>
+      <span class="chip">macOS 14.0 or later</span>
+      <span class="chip">On-device processing</span>
+      <span class="chip">English / 中文</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it solves</h2>
+    <div class="grid">
+      <div class="item">
+        <h3>It genuinely runs locally</h3>
+        <p>All inference happens on your Mac. No account system, no cloud queue, no handing your footage to a third party.</p>
+      </div>
+      <div class="item">
+        <h3>Matched by aspect ratio, not stretched</h3>
+        <p>16:9, 9:16, 1:1, 4:3, 4:5 and 3:2 each get their own inference shape. Landscape footage never gets squashed square and stretched back.</p>
+      </div>
+      <div class="item">
+        <h3>Uses the hardware you paid for</h3>
+        <p>The Neural Engine handles upscaling, the GPU handles encoding. While a task runs, the parts of the machine that should be busy are busy.</p>
+      </div>
+      <div class="item">
+        <h3>Frame interpolation, if you want it</h3>
+        <p>Besides raising resolution, you can raise the frame rate at the same time so motion reads smoother.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions people ask</h2>
+
+    <details>
+      <summary>Is my video uploaded to a server?</summary>
+      <p>No. Everything is processed on your Mac, and the app never reads or sends video content anywhere. Only purchases and subscriptions are handled by Apple's App Store system.</p>
+    </details>
+
+    <details>
+      <summary>What hardware do I need?</summary>
+      <p>A Mac with Apple silicon (M1 and later) and macOS 14.0 or later. Intel Macs don't get Neural Engine acceleration.</p>
+    </details>
+
+    <details>
+      <summary>Which formats are supported?</summary>
+      <p>Common formats such as H.264 and HEVC are read directly. The output is a standard macOS-compatible video file you can drop straight into an editor.</p>
+    </details>
+
+    <details>
+      <summary>Are there limits?</summary>
+      <p>The free version limits output resolution and the length of a single run. Subscribing removes those limits; the exact current specs are shown in the app.</p>
+    </details>
+
+    <details>
+      <summary>How do I manage or cancel a subscription?</summary>
+      <p>Subscriptions are handled by the App Store and can be reviewed and managed at any time in System Settings → Apple Account → Subscriptions on your Mac. Refunds follow Apple's policy.</p>
+    </details>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p class="lede" style="font-size:15px">Found a problem, have a feature request, or need help? Write to us directly. We usually reply within two business days.</p>
+    <p class="contact"><a href="mailto:china.jsy@qq.com">china.jsy@qq.com</a></p>
+  </section>
+
+  <footer>
+    <a href="privacy.html">Privacy Policy (Chinese)</a>
+    <span>© 2026 DZ Video Upscale</span>
+  </footer>
+
+</main>
+</body>
+</html>
