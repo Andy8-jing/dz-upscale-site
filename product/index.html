@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DZ Video Upscale — Product site</title>
+<meta name="description" content="DZ Video Upscale — on-device AI video upscaling for Mac.">
+<link rel="icon" type="image/png" href="assets/appicon.png">
+<link rel="alternate" hreflang="zh-CN" href="index-zh.html">
+<link rel="alternate" hreflang="en" href="index-en.html">
+<link rel="alternate" hreflang="x-default" href="index-en.html">
+<script>
+(function(){
+  var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
+  var isZh = false;
+  for (var i = 0; i < langs.length; i++) { if (/^zh/i.test(langs[i])) { isZh = true; break; } }
+  var target = (isZh ? "index-zh.html" : "index-en.html") + location.search + location.hash;
+  location.replace(target);
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=index-en.html"></noscript>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC",sans-serif;
+    background:#F6F7F8;color:#17191C;font-size:15px}
+  .box{text-align:center;padding:24px}
+  a{color:#1F6F5C;text-decoration:none;border-bottom:1px solid rgba(31,111,92,.35)}
+  .sep{margin:0 10px;color:#C6CDD4}
+</style>
+</head>
+<body>
+<div class="box">DZ Video Upscale<br><br>
+<a href="index-zh.html">中文</a><span class="sep">·</span><a href="index-en.html">English</a></div>
+</body>
+</html>

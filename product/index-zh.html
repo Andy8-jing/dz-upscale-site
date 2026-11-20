@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DZ 视频超分 · 把 8 秒素材拍成 4K</title>
+<meta name="description" content="DZ 视频超分是一款 Mac 原生视频超分与补帧工具。素材不出本机，M 系列芯片全速推理，8 秒短剧片段一键做到 4K。">
+<link rel="icon" type="image/png" href="assets/appicon.png">
+<style>
+/* ===== 基础与色彩（先为 375px 写，桌面在 @media 里追加） ===== */
+:root{
+  --bg:#F5F7FA;
+  --panel:#FFFFFF;
+  --panel-2:#EFF2F6;
+  --line:#DCE2EA;
+  --line-soft:#EAEEF3;
+  --text:#141A21;
+  --dim:#63707F;
+  --accent:#1F6FEB;
+  --warn:#B4650A;
+  --ok:#12855E;
+  --radius:14px;
+  --maxw:1440px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;max-width:100%;overflow-x:hidden}
+body{
+  margin:0;
+  max-width:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;
+  line-height:1.65;
+  overflow-wrap:break-word;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+p{margin:0}
+table{border-collapse:collapse;width:100%}
+
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.wrap > *{min-width:0}
+
+/* ===== 顶栏 ===== */
+.nav{
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:saturate(180%) blur(14px);
+  background:rgba(255,255,255,.78);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav-in{
+  display:flex;align-items:center;gap:14px;
+  height:56px;
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:-.01em}
+.brand-mark{
+  width:24px;height:24px;border-radius:6px;
+  object-fit:cover;flex:0 0 auto;
+}
+.nav-links{display:none;gap:22px;margin-left:18px;font-size:13.5px;color:var(--dim)}
+.nav-links a:hover{color:var(--text)}
+.nav-spacer{flex:1}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  height:38px;padding:0 16px;border-radius:9px;
+  font-size:13.5px;font-weight:500;white-space:nowrap;
+  transition:transform .12s ease, background .15s ease, border-color .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:#FFFFFF}
+.btn-primary:hover{background:#175FD0}
+.btn-ghost{border:1px solid var(--line);color:var(--text);background:var(--panel)}
+.btn-ghost:hover{border-color:#C9D4E3;background:var(--panel-2)}
+
+/* ===== Hero ===== */
+.hero{padding:44px 0 20px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;
+  padding:5px 12px;margin-bottom:20px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.hero h1{
+  font-size:clamp(30px,5.2vw,64px);
+  letter-spacing:-.035em;
+  max-width:15em;
+}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{
+  margin-top:16px;max-width:34em;
+  font-size:clamp(15px,2.1vw,17.5px);
+  color:var(--dim);
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+/* ===== 实测卡 ===== */
+.hero-grid{display:block}
+.hero-card{
+  margin-top:26px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg,#FFFFFF,#F6F8FB);
+  padding:16px 16px 14px;
+}
+.hero-card-h{
+  font-size:12px;color:var(--dim);
+  padding-bottom:11px;margin-bottom:6px;
+  border-bottom:1px solid var(--line-soft);
+}
+.hero-card-row{
+  display:flex;flex-wrap:wrap;gap:2px 12px;
+  justify-content:space-between;
+  padding:8px 0;
+  font-size:13px;
+  border-bottom:1px dashed #E2E7EE;
+}
+.hero-card-row:last-of-type{border-bottom:0}
+.hero-card-row .k{color:var(--dim);flex:0 0 auto}
+.hero-card-row .v{color:var(--text);text-align:right;margin-left:auto}
+.hero-card-note{
+  margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--line-soft);
+  font-size:12px;color:var(--dim);line-height:1.55;
+}
+
+/* ===== 对比滑杆（签名元素） ===== */
+.compare{
+  margin-top:34px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--panel);
+  overflow:hidden;
+}
+.compare-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--dim);
+}
+.compare-head b{color:var(--text);font-weight:500}
+.compare-head .hint{display:none}
+.stage{
+  position:relative;
+  aspect-ratio:9/5;
+  background:#000;
+  cursor:ew-resize;
+  touch-action:none;
+  user-select:none;
+}
+.stage img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  pointer-events:none;
+  -webkit-user-drag:none;
+  user-drag:none;
+}
+.stage .after{clip-path:inset(0 0 0 50%)}
+.stage .divider{
+  position:absolute;top:0;bottom:0;width:2px;
+  background:var(--accent);
+  left:50%;transform:translateX(-1px);
+  box-shadow:0 0 0 1px rgba(31,111,235,.28), 0 0 24px rgba(31,111,235,.28);
+  pointer-events:none;
+}
+.stage .knob{
+  position:absolute;top:50%;left:50%;
+  width:42px;height:42px;margin:-21px 0 0 -21px;
+  border-radius:50%;
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--accent);
+  display:grid;place-items:center;
+  pointer-events:none;
+}
+.stage .knob svg{width:18px;height:18px;stroke:var(--accent)}
+.tag{
+  position:absolute;top:12px;
+  font-size:11.5px;letter-spacing:.02em;
+  padding:4px 9px;border-radius:6px;
+  background:rgba(6,9,13,.72);
+  border:1px solid rgba(255,255,255,.12);
+  color:#D6E0EC;
+}
+.tag.l{left:12px}
+.tag.r{right:12px}
+.compare-foot{
+  padding:11px 16px;border-top:1px solid var(--line-soft);
+  font-size:12px;color:var(--dim);
+}
+.compare-foot span{color:#141A21}
+
+/* ===== 数据条 ===== */
+.stats{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--line-soft);
+  border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;margin-top:18px;
+}
+.stat{background:var(--panel);padding:16px}
+.stat-n{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.stat-l{font-size:12px;color:var(--dim);margin-top:3px}
+
+/* ===== 通用章节 ===== */
+section{padding:44px 0}
+.sec-head{max-width:38em}
+.sec-head h2{font-size:clamp(21px,4vw,30px);letter-spacing:-.025em}
+.sec-head p{margin-top:10px;color:var(--dim);font-size:14.5px}
+
+/* 编辑式三段（不用统一卡片套件） */
+.reasons{display:grid;gap:0;margin-top:34px;border-top:1px solid var(--line)}
+.reason{
+  display:grid;grid-template-columns:1fr;gap:8px;
+  padding:22px 0;border-bottom:1px solid var(--line);
+}
+.reason-k{
+  font-size:12px;color:var(--dim);
+  display:flex;align-items:center;gap:8px;
+}
+.reason-k svg{width:16px;height:16px;stroke:var(--accent);flex:0 0 auto}
+.reason h3{font-size:16.5px}
+.reason p{color:var(--dim);font-size:14px;max-width:36em}
+
+/* 界面截图 */
+.shot{
+  margin-top:30px;border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;background:var(--panel);
+}
+.shot img{width:100%}
+.shot-cap{
+  display:flex;flex-wrap:wrap;gap:10px 18px;
+  padding:12px 16px;border-top:1px solid var(--line-soft);
+  font-size:12px;color:var(--dim);
+}
+.shot-cap i{font-style:normal;color:var(--text);margin-right:6px}
+
+/* ===== 免费 vs Pro ===== */
+.plan-table{margin-top:28px;border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;background:var(--panel)}
+.plan-table table{width:100%;min-width:0;table-layout:fixed}
+.plan-table col.c1{width:40%}
+.plan-table col.c2{width:32%}
+.plan-table col.c3{width:28%}
+.plan-table th,.plan-table td{
+  padding:13px 14px;text-align:left;font-size:13.5px;
+  border-bottom:1px solid var(--line-soft);
+  vertical-align:top;
+}
+.plan-table th{font-weight:500;font-size:12.5px;color:var(--dim)}
+.plan-table th.pro{color:var(--accent)}
+.plan-table tr:last-child td{border-bottom:0}
+.plan-table td:first-child{color:var(--dim)}
+.plan-table td.pro{color:var(--text)}
+.free-note{margin-top:14px;font-size:12.5px;color:var(--dim)}
+
+/* ===== 价格 ===== */
+.prices{display:grid;grid-template-columns:1fr;gap:14px;margin-top:30px}
+.price{
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);padding:20px;
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;
+}
+.price.best{border-color:#BBD3F2;background:linear-gradient(180deg,#F5F9FF,#FFFFFF)}
+.price-tag{
+  position:absolute;top:-1px;right:-1px;
+  font-size:11px;padding:4px 10px;border-radius:0 13px 0 10px;
+  background:#E7F0FD;color:var(--accent);
+  border:1px solid #BBD3F2;border-top:0;border-right:0;
+}
+.price-name{font-size:14px;color:var(--dim)}
+.price-amt{font-size:30px;font-weight:600;letter-spacing:-.03em;line-height:1.15}
+.price-amt small{font-size:13px;color:var(--dim);font-weight:400;margin-left:3px}
+.price-desc{font-size:12.5px;color:var(--dim);min-height:2.6em}
+.price .btn{width:100%;margin-top:8px}
+.price-fine{margin-top:16px;font-size:12px;color:var(--dim)}
+
+/* ===== FAQ ===== */
+.faq{margin-top:26px;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line);padding:0}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:17px 0;text-align:left;font-size:15px;font-weight:500;
+}
+.faq-q svg{width:15px;height:15px;stroke:var(--dim);flex:0 0 auto;transition:transform .2s ease}
+.faq-item.open .faq-q svg{transform:rotate(45deg);stroke:var(--accent)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .26s ease;
+  color:var(--dim);font-size:13.8px;
+}
+.faq-item.open .faq-a{max-height:420px}
+.faq-a-in{padding:0 0 18px;max-width:44em}
+
+/* ===== 页脚 ===== */
+footer{
+  border-top:1px solid var(--line);
+  padding:30px 0 44px;margin-top:20px;
+  color:var(--dim);font-size:12.5px;
+}
+.foot-top{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;justify-content:space-between}
+.foot-links{display:flex;flex-wrap:wrap;gap:16px}
+.foot-links a:hover{color:var(--text)}
+.icp{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.icp a:hover{color:var(--text)}
+
+/* ===== toast ===== */
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);
+  background:var(--panel-2);border:1px solid var(--line);
+  color:var(--text);font-size:13px;
+  padding:11px 18px;border-radius:10px;
+  box-shadow:0 12px 34px rgba(15,23,42,.16);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease;
+  z-index:60;max-width:calc(100vw - 32px);
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ===== 桌面 ===== */
+@media (min-width:768px){
+  body{font-size:15.5px}
+  .wrap{padding:0 28px}
+  .nav-in{height:62px}
+  .nav-links{display:flex}
+  .compare-head .hint{display:inline}
+  .hero{padding:76px 0 24px}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .stat-n{font-size:26px}
+  .reason{grid-template-columns:150px 1fr;gap:6px 28px;padding:26px 0}
+  .reason-k{flex-direction:column;align-items:flex-start;gap:6px}
+  .reason h3{grid-column:2}
+  .reason p{grid-column:2}
+  .prices{grid-template-columns:repeat(3,1fr);gap:16px}
+  section{padding:60px 0}
+}
+@media (min-width:1024px){
+  .hero h1{max-width:15em}
+  .hero-sub{max-width:42em}
+  .sec-head{max-width:42em}
+  .reason{grid-template-columns:180px 1fr;gap:6px 36px}
+  .plan-table col.c1{width:30%}
+  .plan-table col.c2{width:35%}
+  .plan-table col.c3{width:35%}
+  .plan-table th,.plan-table td{padding:15px 18px}
+}
+@media (min-width:1200px){
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+    gap:64px;
+    align-items:end;
+  }
+  .hero-card{margin-top:0;padding:20px 22px}
+}
+
+/* ===== 语言切换 ===== */
+.lang{
+  display:inline-flex;align-items:center;gap:2px;flex:none;
+  border:1px solid var(--line);border-radius:999px;padding:2px;
+  background:var(--panel);
+}
+.lang a{
+  font-size:12px;line-height:1;padding:5px 10px;border-radius:999px;
+  color:var(--dim);white-space:nowrap;
+}
+.lang a.on{background:var(--accent);color:#fff}
+.lang a:hover{color:var(--text)}
+.lang a.on:hover{color:#fff}
+@media (max-width:520px){ .nav-links{display:none} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <div class="brand">
+      <img class="brand-mark" src="assets/appicon.png" alt="" alt="DZ 视频超分图标">
+      DZ 视频超分
+    </div>
+    <div class="nav-links">
+      <a href="#app">界面</a>
+      <a href="#plan">免费与 Pro</a>
+      <a href="#faq">常见问题</a>
+    </div>
+    <span class="nav-spacer"></span>
+    <div class="lang" role="group" aria-label="语言">
+      <a class="on" href="index-zh.html" aria-current="page">中文</a>
+      <a href="index-en.html">EN</a>
+    </div>
+    <button class="btn btn-primary" data-get>获取</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="dot"></span>Mac 原生 · 全部在本机跑完</div>
+          <h1>8 秒的素材，<br>值得一个 <em>4K</em> 的成片。</h1>
+          <p class="hero-sub">
+            AI 视频平台给你的多半是 720p，这里能直接做到 2K，Pro 再往上到 4K。
+            所有推理都在本机完成，素材不进云端、不上传、不排队，拖进来就开工。
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-get>在 App Store 获取</button>
+            <a class="btn btn-ghost" href="#plan">先看免费版能给什么</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <div class="hero-card-h">本机实测 · M4 / 24GB</div>
+          <div class="hero-card-row"><span class="k">素材</span><span class="v">1280×720 · 30fps · 8 秒</span></div>
+          <div class="hero-card-row"><span class="k">处理范围</span><span class="v">整片 240 帧</span></div>
+          <div class="hero-card-row"><span class="k">成片</span><span class="v">2560×1440 · 8 秒</span></div>
+          <div class="hero-card-row"><span class="k">输出档位</span><span class="v">2K 超分 · 本机 GPU 推理</span></div>
+          <div class="hero-card-note">同一段素材免费版也能出 2K，只是限前 8 秒；Pro 整条跑完，并解锁 4K。</div>
+        </aside>
+      </div>
+
+      <!-- 签名元素：真实前后对比 -->
+      <div class="compare">
+        <div class="compare-head">
+          <span><b>同一帧、同一区域</b> · 左为 720p 原片放大，右为超分后 2K 1:1 像素</span>
+          <span class="hint">拖动查看</span>
+        </div>
+        <div class="stage" id="stage">
+          <img class="before" src="assets/detail-before.jpg" alt="720p 原片放大后的帆船细节" draggable="false" fetchpriority="high">
+          <img class="after" src="assets/detail-after.jpg" alt="超分后 2K 的帆船细节" draggable="false" fetchpriority="high">
+          <span class="tag l">原片 · 720p</span>
+          <span class="tag r">成片 · 2K</span>
+          <span class="divider" id="divider"></span>
+          <span class="knob" id="knob" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <path d="M9 7 4.5 12 9 17M15 7l4.5 5-4.5 5"/>
+            </svg>
+          </span>
+        </div>
+        <div class="compare-foot">
+          素材来自一条真实短片：<span>第 2 秒，船帆与索具区域</span>。左侧为 720p 源片该区域放大到 2K 屏幕的观感，右侧为经本 App 超分到 2560×1440 后的成片同区域，按 1:1 像素呈现。
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-n">4K</div><div class="stat-l">最高输出 3840×2160</div></div>
+        <div class="stat"><div class="stat-n">本机</div><div class="stat-l">素材不离开这台 Mac</div></div>
+        <div class="stat"><div class="stat-n">8 秒</div><div class="stat-l">免费版单次上限</div></div>
+        <div class="stat"><div class="stat-n">0 水印</div><div class="stat-l">免费版与 Pro 同画质</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 界面 ===== -->
+  <section id="app">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>一整块参数面板，没有向导，没有弹窗</h2>
+        <p>左侧参数、中间预览与投放、右侧队列，底部一条实时硬件指标。跑任务的时候你会想知道 GPU 在不在干活，这里写着。</p>
+      </div>
+      <div class="shot">
+        <img src="assets/app-window.jpg" alt="DZ 视频超分的主界面：左侧参数面板、中间预览与投放区、右侧任务队列">
+        <div class="shot-cap">
+          <span><i>左</i> 参数面板，选中任务后只作用于该任务</span>
+          <span><i>中</i> 处理前 / 处理后双画面对照</span>
+          <span><i>右</i> 任务队列与断点续跑</span>
+          <span><i>底</i> CPU / GPU / ANE / 内存实时指标</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 免费与 Pro ===== -->
+  <section id="plan">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>免费版能干什么，写清楚</h2>
+        <p>不玩"免费试用七天然后处处受限"那一套。免费版长期可用，限制就三条。</p>
+      </div>
+
+      <div class="plan-table">
+        <table>
+          <colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>
+          <thead>
+            <tr>
+              <th>能力</th>
+              <th>免费版</th>
+              <th class="pro">Pro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>每日任务数</td><td>5 个，每天 0 点重置</td><td class="pro">不限</td></tr>
+            <tr><td>单次素材时长</td><td>8 秒（超出自动截取前 8 秒）</td><td class="pro">不限</td></tr>
+            <tr><td>输出分辨率</td><td>2K（1440p）封顶</td><td class="pro">4K（3840×2160）封顶 · 按短边自定义</td></tr>
+            <tr><td>批量导入</td><td>一次 1 个文件</td><td class="pro">支持批量</td></tr>
+            <tr><td>队列长度</td><td>3 条</td><td class="pro">不限</td></tr>
+            <tr><td>水印</td><td>无</td><td class="pro">无</td></tr>
+            <tr><td>画质算法</td><td>与 Pro 相同</td><td class="pro">针对 Mac 芯片优化的 AI 推理模型</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="free-note">
+        免费版单次超时会被截断而不是拒绝 —— 会明确提示"只处理前 8 秒"，并在成片文件名后标上 <span style="color:var(--text)">_8s</span>，避免你拿错版本。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>几个会被问到的问题</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            免费版的成片会有水印吗？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            没有。免费版与 Pro 的输出画质、编码参数完全一致，也不会盖任何标记。
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            我的素材会被上传吗？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            不会。所有推理和编码都在本机完成，App 不包含任何素材上传逻辑。购买与订阅关系由 Apple 处理，
+            开发者看不到你的 Apple ID 支付信息，也看不到你的视频内容。
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            处理速度大概什么水平？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            取决于输出分辨率、源片长度和芯片型号。4K 超分是最吃算力的档位，同样的片子切成 1080p 会明显更快；
+            主要成本花在逐帧重建细节上，不是编码。跑的时候界面底部有实时 GPU / ANE 指标，能直接看到机器有没有吃满。
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            换一台 Mac 需要重新买吗？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            不用。权益绑定 Apple ID，不绑定设备数量。在新机器上登录同一个 Apple ID，
+            在 App 内点"恢复购买"即可（Mac App Store 也会自动同步）。
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            订阅到期后会发生什么？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            自动回落到免费版：每日 5 个、单次 8 秒、2K 封顶。已经导出的成片不受影响，本地任务队列也还在。
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            支持哪些 Mac？
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <div class="faq-a"><div class="faq-a-in">
+            需要 macOS 14 或更高版本，Apple 芯片（M1 及以后）才能获得完整推理速度。Intel 机型可以安装，但速度会慢于 M 系列。
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="brand" style="font-size:13px">
+        <img class="brand-mark" src="assets/appicon.png" alt="" style="width:20px;height:20px;border-radius:5px">
+        DZ 视频超分
+      </div>
+      <div class="foot-links">
+        <a href="#plan">免费与 Pro</a>
+        <a href="#faq">常见问题</a>
+        <a href="mailto:jingred@139.com">联系开发者</a>
+      </div>
+    </div>
+    <div class="icp">
+      <span>© 2026 DZ 视频超分</span>
+      <!-- 备案号：取得后替换下面这行的占位内容 -->
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">备案号：备案办理中</a>
+      <span>本站由开发者个人运营</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===== 对比滑杆 ===== */
+(function(){
+  var stage = document.getElementById('stage');
+  var after = stage.querySelector('.after');
+  var divider = document.getElementById('divider');
+  var knob = document.getElementById('knob');
+  var pos = 0.5;
+  var dragging = false;
+
+  function apply(p){
+    pos = Math.min(1, Math.max(0, p));
+    var pct = (pos * 100).toFixed(2) + '%';
+    after.style.clipPath = 'inset(0 0 0 ' + pct + ')';
+    divider.style.left = pct;
+    knob.style.left = pct;
+    stage.setAttribute('aria-valuenow', String(Math.round(pos * 100)));
+  }
+  function fromEvent(e){
+    var rect = stage.getBoundingClientRect();
+    var x = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+    return (x - rect.left) / rect.width;
+  }
+
+  function fromEvent(e){
+    var rect = stage.getBoundingClientRect();
+    return (e.clientX - rect.left) / rect.width;
+  }
+
+  stage.addEventListener('pointerdown', function(e){
+    dragging = true;
+    stopAuto(true);
+    try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    apply(fromEvent(e));
+    e.preventDefault();
+  }, { passive: false });
+
+  stage.addEventListener('pointermove', function(e){
+    if (!dragging) return;
+    apply(fromEvent(e));
+  }, { passive: true });
+
+  function endDrag(){ dragging = false; }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('blur', endDrag);
+  stage.addEventListener('dragstart', function(e){ e.preventDefault(); });
+
+  // 键盘可达：左右方向键微调
+  stage.setAttribute('tabindex', '0');
+  stage.setAttribute('role', 'slider');
+  stage.setAttribute('aria-valuemin', '0');
+  stage.setAttribute('aria-valuemax', '100');
+  stage.setAttribute('aria-valuenow', '50');
+  stage.setAttribute('aria-label', '拖动对比原片与超分成片');
+  stage.addEventListener('keydown', function(e){
+    var step = e.shiftKey ? 0.02 : 0.08;
+    if (e.key === 'ArrowLeft') { apply(pos - step); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { apply(pos + step); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') stopAuto(true);
+    stage.setAttribute('aria-valuenow', String(Math.round(pos * 100)));
+  });
+
+  apply(0.5);
+
+  /* ===== 自动演示：像有人用手拖了一遍 ===== */
+  var autoRaf = null, autoTimer = null, autoDone = false, autoLocked = false;
+
+  function stopAuto(lock){
+    if (lock) autoLocked = true;
+    if (autoRaf) { cancelAnimationFrame(autoRaf); autoRaf = null; }
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+  }
+
+  function tween(to, ms, done){
+    var from = pos, t0 = performance.now();
+    function step(){
+      if (autoLocked) return;
+      var t = Math.min(1, (performance.now() - t0) / ms);
+      // easeInOutQuad：起步慢、中间快、收尾慢，接近手拖的加减速
+      var e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      apply(from + (to - from) * e);
+      if (t < 1) autoRaf = requestAnimationFrame(step);
+      else if (done) done();
+    }
+    autoRaf = requestAnimationFrame(step);
+  }
+
+  function playRound(rounds){
+    // 三段不等速，模拟"先慢一点、然后快速往回、最后回中"
+    var seq = [[0.86, 900], [0.14, 1000], [0.5, 820]];
+    var i = 0;
+    (function next(){
+      if (autoLocked) return;
+      if (i >= seq.length){
+        rounds -= 1;
+        if (rounds > 0){
+          autoTimer = setTimeout(function(){ i = 0; next(); }, 1200);
+        } else {
+          autoDone = true;
+        }
+        return;
+      }
+      var seg = seq[i++];
+      tween(seg[0], seg[1], next);
+    })();
+  }
+
+  function startAuto(){
+    if (autoDone || autoLocked) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    autoTimer = setTimeout(function(){ playRound(2); }, 500);
+  }
+
+  if ('IntersectionObserver' in window){
+    var seen = false;
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting && !seen){
+          seen = true;
+          startAuto();
+          io2.disconnect();
+        }
+      });
+    }, { threshold: 0.45 });
+    io2.observe(stage);
+  } else {
+    startAuto();
+  }
+})();
+
+/* ===== FAQ 折叠 ===== */
+(function(){
+  var list = document.getElementById('faqList');
+  list.addEventListener('click', function(e){
+    var q = e.target.closest('.faq-q');
+    if (!q) return;
+    var item = q.parentElement;
+    var open = item.classList.toggle('open');
+    q.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+
+/* ===== 提示（避免僵尸按钮） ===== */
+var toastEl = document.getElementById('toast');
+var toastTimer = null;
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 3200);
+}
+document.querySelectorAll('[data-get]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    showToast('Mac 版正在等待 App Store 审核上线，上线后这里会直连下载页。');
+  });
+});
+
+</script>
+</body>
+</html>
