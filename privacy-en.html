@@ -62,12 +62,12 @@
   </ul>
 
   <h2>2. Network connections</h2>
-  <p>Upscaling and frame interpolation run entirely on your device and do not require an internet connection. Besides App Store system calls, the app only makes network requests to verify that your Mac's system clock is accurate — a mechanism used to prevent anyone from resetting the free quota by changing the system clock, and never for analytics or tracking. These requests are:</p>
+  <p>Upscaling and frame interpolation run entirely on your device and do not require an internet connection. Besides App Store system calls, the app may make network time-sync requests when an accurate time is needed, so that its time-related features run based on the correct current time. These requests are:</p>
   <ul>
     <li>NTP time sync (preferred): a single empty 48-byte NTP request (UDP port 123) to the public time servers time.apple.com and time.google.com;</li>
     <li>HTTPS time sync (fallback only when NTP is unreachable): a HEAD request to www.icloud.com and www.microsoft.com, reading only the Date header in the response.</li>
   </ul>
-  <p>These requests contain no video content, device identifiers, account information, or any personal data, and we do not collect or report information through them. The result is used only for on-device quota calculations and is not linked to any identity. If time sync fails (for example, while offline), core features such as video processing are unaffected and the app remains fully usable; the free quota simply will not reset until a trusted time check can be completed.</p>
+  <p>These requests contain no video content, device identifiers, account information, or any personal data, and we do not collect or report information through them. The result is used only on your device and is not linked to any identity. If time sync fails (for example, while offline), core features such as video processing are unaffected and the app remains fully usable; the relevant time-related features will be calibrated again once sync is restored.</p>
   <p>In addition, the App Store system performs network communication to verify and process subscription purchases. This data is handled by Apple under its own privacy policy, and we cannot access your payment information.</p>
 
   <h2>3. Data stored on your device</h2>
