@@ -214,8 +214,21 @@ table{border-collapse:collapse;width:100%}
   color:var(--accent);text-decoration:none;
   border-bottom:1px solid rgba(31,111,235,.35);
 }
+/* ===== 帆船裁剪对比 ===== */
+.sail-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px;
+}
+.sail-card{
+  margin:0;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);overflow:hidden;
+}
+.sail-card img{display:block;width:100%;height:auto;background:#000}
+.sail-card figcaption{
+  padding:10px 14px;font-size:12.5px;color:var(--dim);
+  border-top:1px solid var(--line-soft);
+}
 @media (max-width:680px){
-  .video-grid{grid-template-columns:1fr}
+  .video-grid,.sail-grid{grid-template-columns:1fr}
 }
 
 /* ===== 数据条 ===== */
@@ -449,14 +462,14 @@ footer{
       <!-- 签名元素：真实前后对比 -->
       <div class="compare">
         <div class="compare-head">
-          <span><b>同一帧、同一画面</b> · 左为 720p 原片放大，右为超分后 1080p</span>
+          <span><b>同一帧、同一画面</b> · 左为 720p 原片放大，右为超分后 4K</span>
           <span class="hint">拖动查看</span>
         </div>
         <div class="stage" id="stage">
           <img class="before" src="assets/frame-before.jpg" alt="720p 原片第 3 秒放大后的帆船画面" draggable="false" fetchpriority="high">
-          <img class="after" src="assets/frame-after.jpg" alt="超分后 1080p 第 3 秒的帆船画面" draggable="false" fetchpriority="high">
+          <img class="after" src="assets/frame-after-4k.jpg" alt="超分后 4K 第 3 秒的帆船画面" draggable="false" fetchpriority="high">
           <span class="tag l">原片 · 720p</span>
-          <span class="tag r">成片 · 1080p</span>
+          <span class="tag r">成片 · 4K</span>
           <span class="divider" id="divider"></span>
           <span class="knob" id="knob" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -465,15 +478,15 @@ footer{
           </span>
         </div>
         <div class="compare-foot">
-          素材来自一条真实短片：<span>第 3 秒画面</span>。左侧为 720p 源片放大到 1080p 的观感，右侧为经本 App 超分到 1920×1080 后的成片同帧，两图统一尺寸后叠放对比。
+          素材来自一条真实短片：<span>第 3 秒画面</span>。左侧为 720p 源片放大到 1080p 的观感，右侧为经本 App 超分到 3840×2160（4K）后统一尺寸的同帧，叠放对比。
         </div>
       </div>
 
       <!-- 在线播放 + 下载原片/成片 -->
       <div class="videos">
         <div class="sec-head" style="margin-top:34px">
-          <h2>原片与超分成片，可在线播放，也可下载对照或重现</h2>
-          <p>同一条 8 秒短片：左为 720p 原片，右为本 App 超分后的 1080p 成片。可直接在浏览器播放，也可下载两个视频逐帧核对，或导入本 App 自行复现处理。</p>
+          <h2>原片与 4K 成片，可在线播放，也可下载对照或重现</h2>
+          <p>同一条 8 秒短片：左为 720p 原片，右为本 App 超分后的 4K 成片。可直接在浏览器播放，也可下载两个视频逐帧核对，或导入本 App 自行复现处理。</p>
         </div>
         <div class="video-grid">
           <figure class="video-card">
@@ -488,15 +501,31 @@ footer{
             </figcaption>
           </figure>
           <figure class="video-card">
-            <video controls preload="metadata" playsinline poster="assets/frame-after.jpg">
-              <source src="media/jinghuayuan-upscaled-1080p.mp4" type="video/mp4">
+            <video controls preload="metadata" playsinline poster="assets/frame-after-4k.jpg">
+              <source src="media/jinghuayuan-upscaled-4k.mp4" type="video/mp4">
               你的浏览器不支持视频播放，可点下方链接下载。
             </video>
             <figcaption>
-              <b>超分成片 · 1080p</b>
-              <span>1920×1080 · HEVC · 约 18 MB</span>
-              <a href="media/jinghuayuan-upscaled-1080p.mp4" download>下载成片</a>
+              <b>超分成片 · 4K</b>
+              <span>3840×2160 · HEVC · 约 25 MB</span>
+              <a href="media/jinghuayuan-upscaled-4k.mp4" download>下载成片</a>
             </figcaption>
+          </figure>
+        </div>
+
+        <!-- 帆船区域单独截图对比 -->
+        <div class="sec-head" style="margin-top:30px">
+          <h2>把帆船单独放大：720p 与 4K 的细节差距</h2>
+          <p>同帧第 3 秒、同一帆船区域，按相同比例裁剪并统一显示宽度。4K 一版的帆面索具、船体质感与水纹都更清晰。</p>
+        </div>
+        <div class="sail-grid">
+          <figure class="sail-card">
+            <img src="assets/sail-720.jpg" alt="720p 原片帆船区域裁剪" loading="lazy">
+            <figcaption>原片 · 720p</figcaption>
+          </figure>
+          <figure class="sail-card">
+            <img src="assets/sail-4k.jpg" alt="4K 超分帆船区域裁剪" loading="lazy">
+            <figcaption>成片 · 4K</figcaption>
           </figure>
         </div>
       </div>

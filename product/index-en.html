@@ -214,8 +214,21 @@ table{border-collapse:collapse;width:100%}
   color:var(--accent);text-decoration:none;
   border-bottom:1px solid rgba(31,111,235,.35);
 }
+/* ===== Sailboat crop comparison ===== */
+.sail-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px;
+}
+.sail-card{
+  margin:0;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);overflow:hidden;
+}
+.sail-card img{display:block;width:100%;height:auto;background:#000}
+.sail-card figcaption{
+  padding:10px 14px;font-size:12.5px;color:var(--dim);
+  border-top:1px solid var(--line-soft);
+}
 @media (max-width:680px){
-  .video-grid{grid-template-columns:1fr}
+  .video-grid,.sail-grid{grid-template-columns:1fr}
 }
 
 /* ===== 数据条 ===== */
@@ -448,14 +461,14 @@ footer{
       <!-- 签名元素：真实前后对比 -->
       <div class="compare">
         <div class="compare-head">
-          <span><b>Same frame, same shot</b> · left is the 720p source scaled up, right is the 1080p result</span>
+          <span><b>Same frame, same shot</b> · left is the 720p source scaled up, right is the 4K result</span>
           <span class="hint">Drag to compare</span>
         </div>
         <div class="stage" id="stage">
           <img class="before" src="assets/frame-before.jpg" alt="The sailing-ship shot at second 3, from the 720p source scaled up" draggable="false" fetchpriority="high">
-          <img class="after" src="assets/frame-after.jpg" alt="The same sailing-ship shot at second 3 after upscaling to 1080p" draggable="false" fetchpriority="high">
+          <img class="after" src="assets/frame-after-4k.jpg" alt="The same sailing-ship shot at second 3 after upscaling to 4K" draggable="false" fetchpriority="high">
           <span class="tag l">Source · 720p</span>
-          <span class="tag r">Result · 1080p</span>
+          <span class="tag r">Result · 4K</span>
           <span class="divider" id="divider"></span>
           <span class="knob" id="knob" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -464,15 +477,15 @@ footer{
           </span>
         </div>
         <div class="compare-foot">
-          Footage from a real short film: <span>the frame at second 3</span>. Left is the 720p source as it looks upscaled to 1080p; right is the same frame after this app upscaled it to 1920×1080. Both frames are normalized to the same size before overlaying.
+          Footage from a real short film: <span>the frame at second 3</span>. Left is the 720p source as it looks upscaled to 1080p; right is the same frame after this app upscaled it to 3840×2160 (4K), normalized to the same size before overlaying.
         </div>
       </div>
 
       <!-- Play online + download source/result -->
       <div class="videos">
         <div class="sec-head" style="margin-top:34px">
-          <h2>Play the source and the upscaled result online, or download them to compare or reproduce</h2>
-          <p>The same 8-second clip: left is the 720p source, right is the 1080p result produced by this app. Play them in the browser, download both to inspect frame by frame, or import them into the app to reproduce the run yourself.</p>
+          <h2>Play the source and the 4K result online, or download them to compare or reproduce</h2>
+          <p>The same 8-second clip: left is the 720p source, right is the 4K result produced by this app. Play them in the browser, download both to inspect frame by frame, or import them into the app to reproduce the run yourself.</p>
         </div>
         <div class="video-grid">
           <figure class="video-card">
@@ -487,15 +500,31 @@ footer{
             </figcaption>
           </figure>
           <figure class="video-card">
-            <video controls preload="metadata" playsinline poster="assets/frame-after.jpg">
-              <source src="media/jinghuayuan-upscaled-1080p.mp4" type="video/mp4">
+            <video controls preload="metadata" playsinline poster="assets/frame-after-4k.jpg">
+              <source src="media/jinghuayuan-upscaled-4k.mp4" type="video/mp4">
               Your browser cannot play video. Use the download link below.
             </video>
             <figcaption>
-              <b>Upscaled result · 1080p</b>
-              <span>1920×1080 · HEVC · about 18 MB</span>
-              <a href="media/jinghuayuan-upscaled-1080p.mp4" download>Download result</a>
+              <b>Upscaled result · 4K</b>
+              <span>3840×2160 · HEVC · about 25 MB</span>
+              <a href="media/jinghuayuan-upscaled-4k.mp4" download>Download result</a>
             </figcaption>
+          </figure>
+        </div>
+
+        <!-- Sailboat crop comparison -->
+        <div class="sec-head" style="margin-top:30px">
+          <h2>Zoom in on the sailboat: the detail gap between 720p and 4K</h2>
+          <p>Second 3, the same sailboat area, cropped by the same ratio and normalized to one display width. The 4K version keeps the rigging, hull texture and water lines far clearer.</p>
+        </div>
+        <div class="sail-grid">
+          <figure class="sail-card">
+            <img src="assets/sail-720.jpg" alt="720p source crop of the sailboat" loading="lazy">
+            <figcaption>Source · 720p</figcaption>
+          </figure>
+          <figure class="sail-card">
+            <img src="assets/sail-4k.jpg" alt="4K upscaled crop of the sailboat" loading="lazy">
+            <figcaption>Result · 4K</figcaption>
           </figure>
         </div>
       </div>
