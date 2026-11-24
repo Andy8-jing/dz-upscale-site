@@ -276,6 +276,16 @@ section{padding:44px 0}
 }
 .shot-cap i{font-style:normal;color:var(--text);margin-right:6px}
 
+/* ===== Tech tags ===== */
+.tech-tags{
+  list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;
+}
+.tech-tags li{
+  font-size:12.5px;color:var(--text);
+  border:1px solid var(--line);background:var(--panel);
+  border-radius:999px;padding:6px 13px;white-space:nowrap;
+}
+
 /* ===== 免费 vs Pro ===== */
 .plan-table{margin-top:28px;border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;background:var(--panel)}
 .plan-table table{width:100%;min-width:0;table-layout:fixed}
@@ -543,8 +553,15 @@ footer{
   <section id="app">
     <div class="wrap">
       <div class="sec-head">
-        <h2>One parameter panel. No wizard, no modals.</h2>
-        <p>Parameters on the left, preview and drop zone in the middle, the queue on the right, and a live hardware readout along the bottom. While a job runs you want to know whether the GPU is actually working — it is written right there.</p>
+        <h2>A native on-device AI inference engine tuned for Apple silicon</h2>
+        <p>Upscaling, frame interpolation and sharpening all run locally through Core ML and Metal, with scheduling optimized for the GPU / ANE on M-series chips — no cloud, no queue, no upload. A live readout of CPU, GPU, ANE and memory along the bottom shows at a glance whether the machine is being pushed to its full capacity.</p>
+        <ul class="tech-tags">
+          <li>Native Swift / SwiftUI</li>
+          <li>Core ML + Metal GPU inference</li>
+          <li>M-series GPU / ANE scheduling</li>
+          <li>On-device inference · zero upload</li>
+          <li>Task queue · resume after interruption</li>
+        </ul>
       </div>
       <div class="shot">
         <img src="assets/app-window.jpg" alt="DZ Video Upscale main window: parameter panel on the left, preview and drop zone in the middle, task queue on the right">

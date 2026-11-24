@@ -276,6 +276,16 @@ section{padding:44px 0}
 }
 .shot-cap i{font-style:normal;color:var(--text);margin-right:6px}
 
+/* ===== 技术标签 ===== */
+.tech-tags{
+  list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;
+}
+.tech-tags li{
+  font-size:12.5px;color:var(--text);
+  border:1px solid var(--line);background:var(--panel);
+  border-radius:999px;padding:6px 13px;white-space:nowrap;
+}
+
 /* ===== 免费 vs Pro ===== */
 .plan-table{margin-top:28px;border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;background:var(--panel)}
 .plan-table table{width:100%;min-width:0;table-layout:fixed}
@@ -544,8 +554,15 @@ footer{
   <section id="app">
     <div class="wrap">
       <div class="sec-head">
-        <h2>一整块参数面板，没有向导，没有弹窗</h2>
-        <p>左侧参数、中间预览与投放、右侧队列，底部一条实时硬件指标。跑任务的时候你会想知道 GPU 在不在干活，这里写着。</p>
+        <h2>为 Apple 芯片原生调校的本地 AI 推理引擎</h2>
+        <p>超分重建、补帧、锐化全部在本机通过 Core ML 与 Metal 运行，针对 M 系列芯片的 GPU / ANE 做调度优化，视频不进云端、不排队。底部实时显示 CPU、GPU、ANE 与内存占用，处理时机器有没有吃满算力，一眼可见。</p>
+        <ul class="tech-tags">
+          <li>原生 Swift / SwiftUI</li>
+          <li>Core ML + Metal GPU 推理</li>
+          <li>M 系列 GPU / ANE 调度</li>
+          <li>本地推理 · 零上传</li>
+          <li>任务队列 · 断点续跑</li>
+        </ul>
       </div>
       <div class="shot">
         <img src="assets/app-window.jpg" alt="DZ 视频超分的主界面：左侧参数面板、中间预览与投放区、右侧任务队列">
