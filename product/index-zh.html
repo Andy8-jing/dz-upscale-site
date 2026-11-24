@@ -193,6 +193,31 @@ table{border-collapse:collapse;width:100%}
 }
 .compare-foot span{color:#141A21}
 
+/* ===== 视频播放/下载 ===== */
+.video-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px;
+}
+.video-card{
+  margin:0;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);overflow:hidden;
+}
+.video-card video{
+  display:block;width:100%;aspect-ratio:16/9;background:#000;object-fit:contain;
+}
+.video-card figcaption{
+  display:flex;flex-direction:column;gap:3px;padding:12px 14px;font-size:12.5px;
+}
+.video-card figcaption b{font-size:13.5px;font-weight:600;color:var(--text)}
+.video-card figcaption span{color:var(--dim)}
+.video-card figcaption a{
+  margin-top:8px;align-self:flex-start;font-size:12.5px;
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid rgba(31,111,235,.35);
+}
+@media (max-width:680px){
+  .video-grid{grid-template-columns:1fr}
+}
+
 /* ===== 数据条 ===== */
 .stats{
   display:grid;grid-template-columns:repeat(2,1fr);
@@ -424,14 +449,14 @@ footer{
       <!-- 签名元素：真实前后对比 -->
       <div class="compare">
         <div class="compare-head">
-          <span><b>同一帧、同一区域</b> · 左为 720p 原片放大，右为超分后 2K 1:1 像素</span>
+          <span><b>同一帧、同一画面</b> · 左为 720p 原片放大，右为超分后 1080p</span>
           <span class="hint">拖动查看</span>
         </div>
         <div class="stage" id="stage">
-          <img class="before" src="assets/detail-before.jpg" alt="720p 原片放大后的帆船细节" draggable="false" fetchpriority="high">
-          <img class="after" src="assets/detail-after.jpg" alt="超分后 2K 的帆船细节" draggable="false" fetchpriority="high">
+          <img class="before" src="assets/frame-before.jpg" alt="720p 原片第 3 秒放大后的帆船画面" draggable="false" fetchpriority="high">
+          <img class="after" src="assets/frame-after.jpg" alt="超分后 1080p 第 3 秒的帆船画面" draggable="false" fetchpriority="high">
           <span class="tag l">原片 · 720p</span>
-          <span class="tag r">成片 · 2K</span>
+          <span class="tag r">成片 · 1080p</span>
           <span class="divider" id="divider"></span>
           <span class="knob" id="knob" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
@@ -440,7 +465,39 @@ footer{
           </span>
         </div>
         <div class="compare-foot">
-          素材来自一条真实短片：<span>第 2 秒，船帆与索具区域</span>。左侧为 720p 源片该区域放大到 2K 屏幕的观感，右侧为经本 App 超分到 2560×1440 后的成片同区域，按 1:1 像素呈现。
+          素材来自一条真实短片：<span>第 3 秒画面</span>。左侧为 720p 源片放大到 1080p 的观感，右侧为经本 App 超分到 1920×1080 后的成片同帧，两图统一尺寸后叠放对比。
+        </div>
+      </div>
+
+      <!-- 在线播放 + 下载原片/成片 -->
+      <div class="videos">
+        <div class="sec-head" style="margin-top:34px">
+          <h2>原片与超分成片，可在线播放，也可下载对照或重现</h2>
+          <p>同一条 8 秒短片：左为 720p 原片，右为本 App 超分后的 1080p 成片。可直接在浏览器播放，也可下载两个视频逐帧核对，或导入本 App 自行复现处理。</p>
+        </div>
+        <div class="video-grid">
+          <figure class="video-card">
+            <video controls preload="metadata" playsinline poster="assets/frame-before.jpg">
+              <source src="media/jinghuayuan-source-720p.mp4" type="video/mp4">
+              你的浏览器不支持视频播放，可点下方链接下载。
+            </video>
+            <figcaption>
+              <b>原片 · 720p</b>
+              <span>1280×720 · H.264 · 约 13 MB</span>
+              <a href="media/jinghuayuan-source-720p.mp4" download>下载原片</a>
+            </figcaption>
+          </figure>
+          <figure class="video-card">
+            <video controls preload="metadata" playsinline poster="assets/frame-after.jpg">
+              <source src="media/jinghuayuan-upscaled-1080p.mp4" type="video/mp4">
+              你的浏览器不支持视频播放，可点下方链接下载。
+            </video>
+            <figcaption>
+              <b>超分成片 · 1080p</b>
+              <span>1920×1080 · HEVC · 约 18 MB</span>
+              <a href="media/jinghuayuan-upscaled-1080p.mp4" download>下载成片</a>
+            </figcaption>
+          </figure>
         </div>
       </div>
 
